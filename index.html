@@ -232,14 +232,29 @@
         }
 
         function addToCart(id) {
+            const product = products.find(p => p.id === id);
+
+            // evento de ga4
+            if (typeof gtag === 'function') {
+                gtag('event', 'add_to_cart', {
+                    currency: 'ARS',
+                    value: product.price,
+                    items: [{
+                        item_id: String(product.id),
+                        item_name: product.name,
+                        price: product.price,
+                        quantity: 1
+                    }]
+                });
+            }
+
             const existingIndex = cart.findIndex(p => p.id === id);
             if (existingIndex > -1) {
                 cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
             } else {
-                const product = products.find(p => p.id === id);
                 cart.push({ ...product, quantity: 1});
             }
-            saveCart()
+            saveCart();
         }
 
         function changeQuantity(index, delta) {
@@ -315,8 +330,20 @@
         });
 
         mensaje += `\n*Total estimado: $${total.toLocaleString()}*\n\n`;
-         mensaje += "¿Cómo coordinamos el pago y el envío?";
+        mensaje += "¿Cómo coordinamos el pago y el envío?";
 
+        if (typeof gtag === 'function') {
+            gtag('event', 'begin_checkout', {
+                currency: 'ARS',
+                value: total,
+                items: cart.map(item => ({
+                    item_id: String(item.id),
+                    item_name: item.name,
+                    price: item.price,
+                    quantity: item.quantity || 1
+                }))
+            });
+        }
         // Usamos comillas invertidas (backticks) para interpolar las variables
         const url = `https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
     
