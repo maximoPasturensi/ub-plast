@@ -104,6 +104,25 @@
 
     <main>
         <div class="grid" id="product-grid"></div>
+
+        <!-- Seccion de garantias y medios de pago-->
+         <section style="margin-top: 3rem; padding: 2rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(220, 1fr)); gap: 1.5rem; text-align: center;">
+            <div>
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏭</div>
+                <strong style="display: block; font-size: 1rem;">Directo de Fabrica</strong>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Calidad Garantizada al mejor precio mayorista.</span>
+            </div>
+            <div>
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💳</div>
+                <strong style="display: block; font-size: 1rem;">Pago Seguro</strong>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Aceptamos transferencias y todas las tarjetas!</span>
+            </div>
+            <div>
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📦</div>
+                <strong style="display: block; font-size: 1rem;">Despacho en el dia</strong>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Envios a todo el pais!</span>
+            </div>
+         </section>
     </main>
 
     <aside class="cart-drawer" id="cart-drawer">
@@ -129,17 +148,17 @@
             },
             {
                 id: 2,
-                name: "Producto beta",
-                price: 25000,
+                name: "Film Stretch Cristal Manual 50cm Para Embalaje Rollos X6u",
+                price: 32500,
                 img: "./assets",
-                link: "link aca"
+                link: "https://mpago.la/TU_LINK_2"
             },
             {
                 id: 3,
-                name: "Producto gamma",
-                price: 12000,
+                name: "Cinta De Embalar Impresa 'FRAGIL' 48x100 Pack X12u",
+                price: 21800,
                 img: "./assets",
-                link: "segundo_link"
+                link: "https://mpago.la/TU_LINK_3"
             }
         ];
 
@@ -237,6 +256,11 @@
         renderProducts();
         updateCartUI();
     </script>
+
+    <footer style="margin-top: 4rem; background: #0f172a; color: #94a3b8; text-align: center; padding: 2rem 1rem; font-size: 0.9rem;">
+        <p><strong style="color: white;">UB PLAST</strong> - Insumos y Soluciones de Embalaje</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">© 2026 Todos los derechos reservados.</p>
+    </footer>
     <!-- boton flotante whatsapp-->
      <a href="https://wa.me/5491131610545?text=Hola!%20Tengo%20una%20consulta%20sobre%20los%20productos"
         target="_blank"
