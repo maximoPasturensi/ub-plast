@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda Oficial</title>
+    <title>| UBPLAST |</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -110,9 +110,27 @@
 
     <script>
         const products = [
-            { id: 1, name: "Cinta De Embalar Transparente 48x100 Autoadhesiva Pack X36u", price: 46999, img: ".assets/cinta_caja.jpeg"},
-            { id: 2, name: "Producto Beta", price: 22000, img: "https://via.placeholder.com/300x200"},
-            { id: 3, name: "Producto Gamma", price: 18500, img: "https://via.placeholder.com/300x200"}
+            {
+                id: 1,
+                name: "Cinta De Embalar Transparente 48x100 Autoadhesiva Pack X36u",
+                price: 46999,
+                img: "./assets/cinta_caja.jpeg",
+                link: "https://articulo.mercadolibre.com.ar/MLA-3812950718-cinta-de-embalar-transparente-48x100-autoadhesiva-pack-x36u-_JM?searchVariation=198719485464&tracking_id=648afb33-04c6-4187-a5b5-dbb2b7aa997a#polycard_client=mshops-appearance-api&title=Productos+recomendados&component=collection_grid&sid=storefronts&global_position=8"
+            },
+            {
+                id: 2,
+                name: "Producto beta",
+                price: 25000,
+                img: "./assets",
+                link: "link aca"
+            },
+            {
+                id: 3,
+                name: "Producto gamma",
+                price: 12000,
+                img: "./assets",
+                link: "segundo_link"
+            }
         ];
 
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -162,6 +180,26 @@
 
         function checkout() {
             if(cart.length === 0) return alert("El carrito esta vacio");
+
+            // Si lleva 1 solo producto redigir al link de mp
+            if (car.length === 1) {
+                window.open(cart[0].link, '_blank');
+                return;
+            }
+
+            // si lleva varios productos, envia la orden por wsp
+            const telefono = "5491131610545";
+            let mensaje = "Hola! Quisiera realizar el siguiente pedido desde la web:%0A%0A";
+
+            cart.forEach(item => {
+                mensaje += `• ${item.name} - $${item.price.toLocaleString()}%0A`;
+            });
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            mensaje += `%0A*Total: $${total.toLocaleString()}*`;
+
+            window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
+
             alert("Gracias por tu compra!");
             cart = [];
             saveCart();
