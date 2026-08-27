@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="es"
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device=widht, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda Oficial</title>
     <style>
         :root {
@@ -60,12 +60,12 @@
         .btn-add:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
         /* Drawer Carrito */
-        .card-drawer {
+        .cart-drawer {
             position: fixed;
             top: 0;
             right: 0;
             width: 100%;
-            max-width: 380%;
+            max-width: 380px;
             height: 100vh;
             background: var(--surface);
             box-shadow: -4px 0 15px rgba(0,0,0,0.1);
@@ -77,7 +77,7 @@
             flex-direction: column;
         }
         .cart-drawer.open {
-            transform: translateX(0s);
+            transform: translateX(0);
         }
         .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 1rem;}
         .cart-items { flex-grow: 1; overflow-y: auto; margin: 1rem 0;}
@@ -89,7 +89,7 @@
 
     <header>
         <div class="logo">E-Commerce</div>
-        <button class="cart-btn" onclick="toggleCart()">Carrito (<span id="cart=count">0</span>)</button>
+        <button class="cart-btn" onclick="toggleCart()">Carrito (<span id="cart-count">0</span>)</button>
     </header>
 
     <main>
@@ -110,7 +110,7 @@
 
     <script>
         const products = [
-            { id: 1, name: "Cinta De Embalar Transparente 48x100 Autoadhesiva Pack X36u", price: 46.999, img: ".assets/cinta_caja.jpeg"},
+            { id: 1, name: "Cinta De Embalar Transparente 48x100 Autoadhesiva Pack X36u", price: 46999, img: ".assets/cinta_caja.jpeg"},
             { id: 2, name: "Producto Beta", price: 22000, img: "https://via.placeholder.com/300x200"},
             { id: 3, name: "Producto Gamma", price: 18500, img: "https://via.placeholder.com/300x200"}
         ];
@@ -121,8 +121,8 @@
             const grid = document.getElementById('product-grid');
             grid.innerHTML = products.map(p => `
                 <div class="card">
-                    <img src="${p.img}" alt="${p.name}"
-                    <div class="card_body">
+                    <img src="${p.img}" alt="${p.name}">
+                    <div class="card-body">
                         <div class="card-title">${p.name}</div>
                         <div class="card-price">$${p.price.toLocaleString()}</div>
                         <button class="btn-add" onclick="addToCart(${p.id})">Agregar al Carrito</button>
@@ -143,7 +143,7 @@
         }
 
         function updateCartUI() {
-            document.getElementById('cart-count').innerText = cart.lenght;
+            document.getElementById('cart-count').innerText = cart.length;
             const itemsContainer = document.getElementById('cart-items');
             itemsContainer.innerHTML = cart.map((item, index) => `
                 <div class="cart-item">
@@ -161,7 +161,7 @@
         }
 
         function checkout() {
-            if(cart.lenght === 0) return alert("El carrito esta vacio");
+            if(cart.length === 0) return alert("El carrito esta vacio");
             alert("Gracias por tu compra!");
             cart = [];
             saveCart();
