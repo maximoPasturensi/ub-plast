@@ -61,12 +61,24 @@
 
         /* Drawer Carrito */
         .card-drawer {
-            position: fixed; top: 0; right: -400px; width: 100%; max-width: 380px; height: 100vh;
-            background: var(--surface); box-shadow: -4px 0 15px rgba(0,0,0,0.1);
-            transition: right 0.3s ease; z-index: 20; padding: 1.5rem;
-            display: flex; flex-direction: column;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            max-width: 380%;
+            height: 100vh;
+            background: var(--surface);
+            box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 100;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
         }
-        .cart-drawer.open { right: 0;}
+        .cart-drawer.open {
+            transform: translateX(0s);
+        }
         .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 1rem;}
         .cart-items { flex-grow: 1; overflow-y: auto; margin: 1rem 0;}
         .cart-item { display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;}
@@ -98,7 +110,7 @@
 
     <script>
         const products = [
-            { id: 1, name: "Producto Alpha", price: 15000, img: "https://via.placeholder.com/300x200"},
+            { id: 1, name: "Cinta De Embalar Transparente 48x100 Autoadhesiva Pack X36u", price: 46.999, img: ".assets/cinta_caja.jpeg"},
             { id: 2, name: "Producto Beta", price: 22000, img: "https://via.placeholder.com/300x200"},
             { id: 3, name: "Producto Gamma", price: 18500, img: "https://via.placeholder.com/300x200"}
         ];
