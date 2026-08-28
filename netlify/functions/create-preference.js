@@ -2,11 +2,11 @@ const https = require("https");
 
 exports.handler = async function (event) {
     if (event.httpMethod !== "POST") {
-        return { statusCode: 405, body: "Method Not Allowed"};
+        return { statusCode: 405, body: "Method Not Allowed" };
     }
 
     const { items } = JSON.parse(event.body);
-    const ACCES_TOKEN = process.env.MP_ACCESS_TOKEN; // variable de entorno
+    const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
 
     const preference = {
         items: items.map(item => ({
@@ -16,9 +16,9 @@ exports.handler = async function (event) {
             currency_id: "ARS",
         })),
         back_urls: {
-            success: "https://https://ubplast.netlify.app/?pago=exitoso",
-            failure: "https://https://ubplast.netlify.app/?pago=fallido",
-            pending: "https://https://ubplast.netlify.app/?pago=pendiente"
+            success: "https://ubplast.netlify.app/?pago=exitoso",
+            failure: "https://ubplast.netlify.app/?pago=fallido",
+            pending: "https://ubplast.netlify.app/?pago=pendiente",
         },
         auto_return: "approved",
         statement_descriptor: "UB PLAST",
@@ -35,7 +35,7 @@ exports.handler = async function (event) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${ACCES_TOKEN}`,
+                Authorization: `Bearer ${ACCESS_TOKEN}`,
             },
         };
 
@@ -44,16 +44,16 @@ exports.handler = async function (event) {
             res.on("data", chunk => (body += chunk));
             res.on("end", () => {
                 const parsed = JSON.parse(body);
-                resolve ({
+                resolve({
                     statusCode: 200,
-                    headers: { "Acces-Control-Allow-Origin": "*"},
-                    body: JSON.stringify({ init_point: parsed.init_point}),
+                    headers: { "Access-Control-Allow-Origin": "*" },
+                    body: JSON.stringify({ init_point: parsed.init_point }),
                 });
             });
         });
 
         req.on("error", (e) => {
-            resolve({ statusCode: 500, body: JSON.stringify({ error: e.message}) });
+            resolve({ statusCode: 500, body: JSON.stringify({ error: e.message }) });
         });
 
         req.write(data);
