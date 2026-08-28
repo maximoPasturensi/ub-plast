@@ -584,7 +584,7 @@
             try {
                 const response = await fetch("/.netlify/functions/create-preference", {
                     method: "POST",
-                    headers: { " Content-Type": "applications/json" },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ items: cart }),
                 });
 
