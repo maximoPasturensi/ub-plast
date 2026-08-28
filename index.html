@@ -3,7 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>| UBPLAST |</title>
+
+    <!-- SEO BASICO -->
+    <meta name="description" content="UB PLAST - Insumos de embalaje directo de fabrica. Cintas adhesivas, film stretch y más. Envíos a todo el país. Precio mayorista garantizado.">
+    <meta name="keywords" content="cintas de embalar, film strech, insumos de embalaje, embalaje mayorista, cinta adhesiva, UB PLAST">
+    <meta name="author" content="UB PLAST">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
+    <meta property="og:title" content="UB PLAST | Insumos de Embalaje Directo de Fabrica">
+    <meta property="og:description" content="Cintas, film stretch y más. Calidad industrial al mejor precio mayorista. Envíos a todo el país.">
+    <meta property="type" content="website">
+    <meta property="og:url" content="https://ubplast.netlify.app/">
+    <meta property="og:image" content="https://ubplast.com.ar/assets/og-image.webp">
+    <meta property="og:locale" content="es_AR">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="UB PLAST | Insumos de Embalaje">
+    <meta name="twitter:description" content="Cintas, film stretch y más. Directo de fábrica.">
+    <title>UB PLAST | Insumos de Embalaje Directo de Fábrica</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -221,6 +240,7 @@
     </div>
 
     <script>
+        const MP_PUBLIC_KEY = "APP_USR-f7a883d6-d865-4030-a599-fa405dc823a7";
         const products = [
             {
                 id: 1,
@@ -271,11 +291,11 @@
                 <div class="card">
                     <div style="position: relative; cursor: pointer;" onclick="showProductDetail(${p.id})">
                         <span style="position: absolute; top: 10px; left: 10px; background: #22c55e; color: white; font-size: 0.75rem; font-weight: bold; padding: 3px 8px; border-radius: 4px;">Envío Inmediato</span>
-                        <img src="${p.img}" alt="${p.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200?text=UB+PLAST';" style="width: 100%; height: 200px; object-fit: cover;">
+                        <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200?text=UB+PLAST';" style="width: 100%; height: 200px; object-fit: cover;">
                     </div>
                     <div class="card-body">
                         <div class="card-title" style="cursor: pointer;" onclick="showProductDetail(${p.id})">${p.name}</div>
-                        <div class="card-price">$${p.price.toLocaleString()}</div>
+                        <div class="card-price">$${p.price.toLocaleString('es-AR')} <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-muted);">ARS</span></div>
                         <button class="btn-add" onclick="addToCart(${p.id})">Agregar al Carrito</button>
                     </div>
                 </div>
@@ -285,7 +305,6 @@
         function renderCatalogView() {
             const mainContainer = document.querySelector('main');
             mainContainer.innerHTML = `
-
                 <!-- Categorías -->
                 <div id="filter-container" style="display: flex; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap;">
                     <button class="filter-btn active" onclick="filterProducts('todos', this)">Todos</button>
@@ -295,9 +314,28 @@
 
                 <!-- Grilla de productos -->
                 <div class="grid" id="product-grid"></div>
+
+                <!-- Seccion de garantias y medios de pago -->
+                <section style="margin-top: 3rem; padding: 2rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; text-align: center;">
+                    <div>
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏭</div>
+                        <strong style="display: block; font-size: 1rem;">Directo de Fábrica</strong>
+                        <span style="font-size: 0.85rem; color: var(--text-muted);">Calidad Garantizada al mejor precio mayorista.</span>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">💳</div>
+                        <strong style="display: block; font-size: 1rem;">Pago Seguro</strong>
+                        <span style="font-size: 0.85rem; color: var(--text-muted);">Aceptamos transferencias y todas las tarjetas!</span>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📦</div>
+                        <strong style="display: block; font-size: 1rem;">Despacho en el día</strong>
+                        <span style="font-size: 0.85rem; color: var(--text-muted);">Envíos a todo el país!</span>
+                    </div>
+                </section>
             `;
 
-            renderProducts()
+            renderProducts();
         }
 
         function showToast(message) {
@@ -532,10 +570,51 @@
             renderProducts(filtered);
         }
 
-        function checkout() {
+        async function checkout() {
             if (cart.length === 0) {
                 alert("El carrito está vacío. Agregá algún producto antes de finalizar la compra.");
                 return;
+            }
+
+            // Deshabilitar botón mientras procesa
+            const btn = document.querySelector(".checkout-btn");
+            btn.disabled = true;
+            btn.textContent = "Procesando..."
+
+            try {
+                const response = await fetch("/.netlify/functions/create-preference", {
+                    method: "POST",
+                    headers: { " Content-Type": "applications/json" },
+                    body: JSON.stringify({ items: cart }),
+                });
+
+                const data = await response.json()
+
+                if (data.init_point) {
+                   // evento GA4
+                   if (typeof gtag === "function") {
+                    gtag("event", "begin_checkout", {
+                        currency: "ARS",
+                        value: cart.reduce((s, i) => s + i.price * (i.quantity || 1), 0),
+                        items: cart.map(i => ({
+                            item_id: String(i.id),
+                            item_name: i.name,
+                            price: i.price,
+                            quantity: i.quantity || 1,
+                        })),
+                    });
+                   }
+                   // redirigir a mp
+                   window.location.href = data.init_point;
+                } else {
+                    throw new Error("No se recibio el link de pago");
+                }
+            } catch (err) {
+                alert("Hubo un error al procesar el pago. Intenta de nuevo o contactanos por Whatsapp.");
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Finalizar Compra";
             }
 
             const telefonoWhatsApp = "5491131610545";
